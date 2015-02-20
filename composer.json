@@ -1,12 +1,12 @@
 {
-    "name": "umpirsky/twig-gettext-extractor",
+    "name": "saeven/cirlical-twig-extractor",
     "type": "application",
-    "description": "The Twig Gettext Extractor is Poedit friendly tool which extracts translations from twig templates.",
+    "description": "The Twig Gettext Extractor is Poedit friendly tool which extracts translations from twig templates. This fork from the original has been modified to support saeven/circlical-twig-trans, which adds text domain support to the trans extension.",
     "license": "MIT",
     "authors": [
         {
-            "name": "Саша Стаменковић",
-            "email": "umpirsky@gmail.com"
+            "name": "Alexandre Lemaire",
+            "email": "alemaire@circlical.com"
         }
     ],
     "require": {
