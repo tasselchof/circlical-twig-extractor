@@ -2,8 +2,13 @@
 <?php
 
 /**
- * This file is part of the Twig Gettext utility.
- *
+ * Fork from umpirsky's gettext extractor.  Modified to support
+ * custom trans extension that supports domains.
+ * 
+ *  Modification:
+ *  Alexandre Lemaire <alemaire@circlical.com>
+ * 
+ *  Original work:
  *  (c) Саша Стаменковић <umpirsky@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -26,10 +31,23 @@ $twig = new Twig_Environment(new Twig\Gettext\Loader\Filesystem('/'), array(
     'cache'       => '/tmp/cache/'.uniqid(),
     'auto_reload' => true
 ));
+
 $twig->addExtension(new Symfony\Bridge\Twig\Extension\TranslationExtension(
     new Symfony\Component\Translation\Translator(null)
 ));
-$twig->addExtension(new Twig_Extensions_Extension_I18n());
+
+$chain    = new Twig_Loader_Chain( [] );
+$renderer = new ZfcTwig\View\TwigRenderer(
+    new Zend\View\View, 
+    $chain, 
+    $twig, 
+    new ZfcTwig\View\TwigResolver($twig)
+);
+
+$trans    = new CirclicalTwigTrans\Model\Twig\Trans( $renderer );
+
+$twig->addExtension( $trans );
+
 $twig->addExtension(new Symfony\Bridge\Twig\Extension\RoutingExtension(
     new Twig\Gettext\Routing\Generator\UrlGenerator()
 ));
@@ -38,6 +56,7 @@ $twig->addExtension(new Symfony\Bridge\Twig\Extension\FormExtension(
         new Symfony\Bridge\Twig\Form\TwigRendererEngine()
     )
 ));
+
 // You can add more extensions here.
 $twig->addFunction(new \Twig_SimpleFunction('formLabel', true));
 $twig->addFunction(new \Twig_SimpleFunction('formInput', true));
@@ -50,6 +69,7 @@ $twig->addFunction(new \Twig_SimpleFunction('headMeta', true));
 $twig->addFunction(new \Twig_SimpleFunction('headLink', true));
 $twig->addFunction(new \Twig_SimpleFunction('headScript', true));
 $twig->addFunction(new \Twig_SimpleFunction('OptIn', true));
+
 
 array_shift($_SERVER['argv']);
 $addTemplate = false;
