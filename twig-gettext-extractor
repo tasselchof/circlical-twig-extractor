@@ -39,6 +39,17 @@ $twig->addExtension(new Symfony\Bridge\Twig\Extension\FormExtension(
     )
 ));
 // You can add more extensions here.
+$twig->addFunction(new \Twig_SimpleFunction('formLabel', true));
+$twig->addFunction(new \Twig_SimpleFunction('formInput', true));
+$twig->addFunction(new \Twig_SimpleFunction('formElementErrors', true));
+$twig->addFunction(new \Twig_SimpleFunction('formCaptcha', true));
+$twig->addFunction(new \Twig_SimpleFunction('formHidden', true));
+$twig->addFunction(new \Twig_SimpleFunction('doctype', true));
+$twig->addFunction(new \Twig_SimpleFunction('headTitle', true));
+$twig->addFunction(new \Twig_SimpleFunction('headMeta', true));
+$twig->addFunction(new \Twig_SimpleFunction('headLink', true));
+$twig->addFunction(new \Twig_SimpleFunction('headScript', true));
+$twig->addFunction(new \Twig_SimpleFunction('OptIn', true));
 
 array_shift($_SERVER['argv']);
 $addTemplate = false;
