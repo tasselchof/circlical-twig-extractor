@@ -63,14 +63,21 @@ $twig->addFunction(new \Twig_SimpleFunction('formInput', true));
 $twig->addFunction(new \Twig_SimpleFunction('formElementErrors', true));
 $twig->addFunction(new \Twig_SimpleFunction('formCaptcha', true));
 $twig->addFunction(new \Twig_SimpleFunction('formHidden', true));
+$twig->addFunction(new \Twig_SimpleFunction('formSelect', true));
 $twig->addFunction(new \Twig_SimpleFunction('doctype', true));
 $twig->addFunction(new \Twig_SimpleFunction('headTitle', true));
 $twig->addFunction(new \Twig_SimpleFunction('headMeta', true));
-$twig->addFunction(new \Twig_SimpleFunction('headLink', true));
+$twig->addFunction(new \Twig_SimpleFunction('headStyle', true));
 $twig->addFunction(new \Twig_SimpleFunction('headScript', true));
+$twig->addFunction(new \Twig_SimpleFunction('headLink', true));
 $twig->addFunction(new \Twig_SimpleFunction('OptIn', true));
 $twig->addFunction(new \Twig_SimpleFunction('InviteEmailHeader', true));
 $twig->addFunction(new \Twig_SimpleFunction('InviteEmailFooter', true));
+$twig->addFunction(new \Twig_SimpleFunction('inlineScript', true));
+$twig->addFunction(new \Twig_SimpleFunction('EmeButtonMenu', true));
+$twig->addFunction(new \Twig_SimpleFunction('layout', true));
+$twig->addFunction(new \Twig_SimpleFunction('recaptcha', true));
+
 
 
 array_shift($_SERVER['argv']);
