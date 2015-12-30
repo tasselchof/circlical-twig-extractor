@@ -39,6 +39,25 @@ class Extractor
      */
     protected $parameters;
 
+
+    protected $executable;
+
+    /**
+     * @return mixed
+     */
+    public function getExecutable()
+    {
+        return $this->executable;
+    }
+
+    /**
+     * @param mixed $executable
+     */
+    public function setExecutable( $executable )
+    {
+        $this->executable = $executable;
+    }
+
     public function __construct(\Twig_Environment $environment)
     {
         $this->environment = $environment;
@@ -69,7 +88,11 @@ class Extractor
 
     public function extract()
     {
-        $command = 'xgettext';
+        error_reporting( E_ALL );
+        ini_set( 'display_errors', 'On' );
+
+
+        $command = $this->executable ?: 'xgettext';
         $command .= ' '.join(' ', $this->parameters);
         $command .= ' '.join(' ', $this->templates);
 
