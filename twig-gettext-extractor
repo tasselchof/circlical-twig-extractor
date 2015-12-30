@@ -36,7 +36,7 @@ $twig->addExtension(new Symfony\Bridge\Twig\Extension\TranslationExtension(
     new Symfony\Component\Translation\Translator(null)
 ));
 
-$chain    = new Twig_Loader_Chain( [] );
+$chain    = new Twig_Loader_Chain([]);
 $renderer = new ZfcTwig\View\TwigRenderer(
     new Zend\View\View, 
     $chain, 
@@ -70,27 +70,62 @@ $twig->addFunction(new \Twig_SimpleFunction('headMeta', true));
 $twig->addFunction(new \Twig_SimpleFunction('headStyle', true));
 $twig->addFunction(new \Twig_SimpleFunction('headScript', true));
 $twig->addFunction(new \Twig_SimpleFunction('headLink', true));
-$twig->addFunction(new \Twig_SimpleFunction('OptIn', true));
-$twig->addFunction(new \Twig_SimpleFunction('InviteEmailHeader', true));
-$twig->addFunction(new \Twig_SimpleFunction('InviteEmailFooter', true));
 $twig->addFunction(new \Twig_SimpleFunction('inlineScript', true));
-$twig->addFunction(new \Twig_SimpleFunction('EmeButtonMenu', true));
 $twig->addFunction(new \Twig_SimpleFunction('layout', true));
 $twig->addFunction(new \Twig_SimpleFunction('recaptcha', true));
 
-
-
+$setFunctions = false;
 array_shift($_SERVER['argv']);
-$addTemplate = false;
+foreach ($_SERVER['argv'] as $arg)
+{
+    if( "--functions" == $arg )
+    {
+        $setFunctions = true;
+    }
+    else if( $setFunctions )
+    {
+        foreach( explode(",", $arg ) as $fn )
+            $twig->addFunction(new \Twig_SimpleFunction($fn,true));
+	    $setFunctions = false;
+    }
+}
 
+
+
+
+$addTemplate = false;
+$setExecutable = false;
 $extractor = new Twig\Gettext\Extractor($twig);
 
-foreach ($_SERVER['argv'] as $arg) {
-    if ('--files' == $arg) {
+foreach ($_SERVER['argv'] as $arg)
+{
+    if ('--files' == $arg)
+    {
         $addTemplate = true;
-    } else if ($addTemplate) {
+    }
+    else if ($addTemplate)
+    {
         $extractor->addTemplate(getcwd().DIRECTORY_SEPARATOR.$arg);
-    } else {
+    }
+    else if( "--exec" == $arg )
+    {
+        $setExecutable = true;
+    }
+    else if( $setExecutable )
+    {
+        $extractor->setExecutable( $arg );
+        $setExecutable = false;
+    }
+    else if( "--functions" == $arg )
+    {
+        $setFunctions = true;
+    }
+    else if( $setFunctions )
+    {
+	    $setFunctions = false;
+    }
+    else
+    {
         $extractor->addGettextParameter($arg);
     }
 }
