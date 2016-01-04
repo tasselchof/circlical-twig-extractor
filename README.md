@@ -1,23 +1,34 @@
-Twig Gettext Extractor [![Build Status](https://secure.travis-ci.org/umpirsky/Twig-Gettext-Extractor.png?branch=master)](http://travis-ci.org/umpirsky/Twig-Gettext-Extractor)
+Twig Gettext Extractor
 ======================
 
-The Twig Gettext Extractor is [Poedit](http://www.poedit.net/download.php)
-friendly tool which extracts translations from twig templates.
+This Twig Gettext Extractor is a fork with some love put in; things I needed to develop an alternative to Poedit that
+on OS X is a major pain with all of the temp folder issues.
+
+This tool, gives you what you need to extract *.po files from your Twig files, and additionally:
+
+* supports text domains
+* supports command-line stubs for functions
+* supports command-line stubs for filters
 
 ## Installation
 
-The recommended way to install Twig Gettext Extractor is through
-[composer](http://getcomposer.org).
+Install this through composer [composer](http://getcomposer.org).
 
 ```json
 {
     "require": {
-        "umpirsky/twig-gettext-extractor": "1.1.*"
+        "saeven/circlical-twig-extractor": "*"
     }
 }
 ```
+## Web-Based Editing for Zend Framework 2
 
-## Setup
+You can skip this setup though, and use my web-based editor for ZF2.
+[Click here for more info](https://packagist.org/packages/saeven/zf2-poeditor)
+
+When the time comes, I'll PSR-7 it to make it framework-agnostic.
+
+## PoEdit Setup
 
 By default, Poedit does not have the ability to parse Twig templates.
 This can be resolved by adding an additional parser (Edit > Preferences > Parsers)
@@ -33,8 +44,7 @@ with the following options:
 
 <img src="http://i.imgur.com/f9px2.png" />
 
-Now you can update your catalog and Poedit will synchronize it with your twig
-templates.
+Now you can update your catalog and Poedit will synchronize it with your twig templates.
 
 ## Custom extensions
 
@@ -57,4 +67,4 @@ To run the test suite, you need [composer](http://getcomposer.org) and
 
 ## License
 
-Twig Gettext Extractor is licensed under the MIT license.
+Twig Gettext Extractor is licensed under the MIT license, like its parent fork.

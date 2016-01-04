@@ -1,7 +1,7 @@
 {
     "name": "saeven/circlical-twig-extractor",
     "type": "application",
-    "description": "The Twig Gettext Extractor is Poedit friendly tool which extracts translations from twig templates. This fork from the original has been modified to support saeven/zf2-circlical-trans, which adds text domain support to the trans extension.",
+    "description": "The Twig Gettext Extractor is Poedit friendly tool which extracts translations from Twig templates. This fork from the original has been modified to support saeven/zf2-circlical-trans, which adds text domain support to the trans extension.",
     "license": "MIT",
     "authors": [
         {
@@ -13,6 +13,7 @@
         "php":                 ">=5.3.3",
         "twig/twig":           ">=1.2.0,<2.0-dev",
         "twig/extensions":     ">=1.0,<2.0",
+        "zendframework/zend-view": "@stable",
         "symfony/twig-bridge": ">=2.0,<3.0",
         "symfony/routing":     ">=2.0,<3.0",
         "symfony/filesystem":  ">=2.0,<3.0",
@@ -21,7 +22,8 @@
         "saeven/zf2-circlical-trans": "dev-master"
     },
     "require-dev": {
-        "symfony/config":      "2.1.*"
+        "symfony/config": "2.1.*",
+		"phpspec/phpspec": "@stable"
     },
     "minimum-stability": "dev",
     "autoload": {

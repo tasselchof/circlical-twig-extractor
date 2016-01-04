@@ -58,23 +58,16 @@ $twig->addExtension(new Symfony\Bridge\Twig\Extension\FormExtension(
 ));
 
 // You can add more extensions here.
-$twig->addFunction(new \Twig_SimpleFunction('formLabel', true));
-$twig->addFunction(new \Twig_SimpleFunction('formInput', true));
-$twig->addFunction(new \Twig_SimpleFunction('formElementErrors', true));
-$twig->addFunction(new \Twig_SimpleFunction('formCaptcha', true));
-$twig->addFunction(new \Twig_SimpleFunction('formHidden', true));
-$twig->addFunction(new \Twig_SimpleFunction('formSelect', true));
-$twig->addFunction(new \Twig_SimpleFunction('doctype', true));
-$twig->addFunction(new \Twig_SimpleFunction('headTitle', true));
-$twig->addFunction(new \Twig_SimpleFunction('headMeta', true));
-$twig->addFunction(new \Twig_SimpleFunction('headStyle', true));
-$twig->addFunction(new \Twig_SimpleFunction('headScript', true));
-$twig->addFunction(new \Twig_SimpleFunction('headLink', true));
-$twig->addFunction(new \Twig_SimpleFunction('inlineScript', true));
-$twig->addFunction(new \Twig_SimpleFunction('layout', true));
-$twig->addFunction(new \Twig_SimpleFunction('recaptcha', true));
+$default_stub_functions = [
+    'formLabel', 'formInput', 'formElementErrors', 'formCaptcha', 'formHidden', 'formSelect', 'doctype',
+    'headTitle', 'headMeta', 'headStyle', 'headScript', 'headLink', 'inlineScript', 'layout',  'recaptcha',
+];
+
+foreach( $default_stub_functions as $f )
+    $twig->addFunction(new \Twig_SimpleFunction($f, true));
 
 $setFunctions = false;
+$setFilters   = false;
 array_shift($_SERVER['argv']);
 foreach ($_SERVER['argv'] as $arg)
 {
@@ -88,9 +81,17 @@ foreach ($_SERVER['argv'] as $arg)
             $twig->addFunction(new \Twig_SimpleFunction($fn,true));
 	    $setFunctions = false;
     }
+    else if( "--filters" == $arg )
+    {
+        $setFilters = true;
+    }
+    else if( $setFilters )
+    {
+        foreach( explode(",", $arg ) as $fn )
+            $twig->addFilter(new \Twig_SimpleFilter($fn,true));
+	    $setFilters = false;
+    }
 }
-
-
 
 
 $addTemplate = false;
@@ -123,6 +124,14 @@ foreach ($_SERVER['argv'] as $arg)
     else if( $setFunctions )
     {
 	    $setFunctions = false;
+    }
+    else if( "--filters" == $arg )
+    {
+        $setFilters = true;
+    }
+    else if( $setFilters )
+    {
+	    $setFilters = false;
     }
     else
     {
