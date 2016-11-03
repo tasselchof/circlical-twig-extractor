@@ -19,7 +19,7 @@
         "symfony/filesystem":  ">=2.0,<3.0",
         "symfony/translation": ">=2.0,<3.0",
         "symfony/form":        ">=2.0,<3.0",
-        "saeven/zf2-circlical-trans": "dev-master"
+        "saeven/zf2-circlical-trans": "*"
     },
     "require-dev": {
         "symfony/config": "2.1.*",
