@@ -48,25 +48,6 @@ array_shift($_SERVER['argv']);
 
 $setFunctions = false;
 $setFilters = false;
-foreach ($_SERVER['argv'] as $arg) {
-    if ('--functions' === $arg) {
-        $setFunctions = true;
-    } else if ($setFunctions) {
-        foreach (explode(',', $arg) as $functionName) {
-            $twig->addFunction(new \Twig_SimpleFunction($functionName, true));
-        }
-        $setFunctions = false;
-    } else if ('--filters' === $arg) {
-        $setFilters = true;
-    } else if ($setFilters) {
-        foreach (explode(',', $arg) as $filterName) {
-            $twig->addFilter(new \Twig_SimpleFilter($filterName, true));
-        }
-        $setFilters = false;
-    }
-}
-
-
 $addTemplate = false;
 $setExecutable = false;
 
@@ -85,10 +66,16 @@ foreach ($_SERVER['argv'] as $arg) {
     } else if ('--functions' === $arg) {
         $setFunctions = true;
     } else if ($setFunctions) {
+        foreach (explode(',', $arg) as $functionName) {
+            $twig->addFunction(new \Twig_SimpleFunction($functionName, true));
+        }
         $setFunctions = false;
     } else if ('--filters' === $arg) {
         $setFilters = true;
     } else if ($setFilters) {
+        foreach (explode(',', $arg) as $filterName) {
+            $twig->addFilter(new \Twig_SimpleFilter($filterName, true));
+        }
         $setFilters = false;
     } else {
         $extractor->addGettextParameter($arg);
