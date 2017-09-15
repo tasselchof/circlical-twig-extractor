@@ -1,34 +1,69 @@
-Twig Gettext Extractor
+<h3 align="center">
+    <a href="https://github.com/umpirsky">
+        <img src="https://farm2.staticflickr.com/1709/25098526884_ae4d50465f_o_d.png" />
+    </a>
+</h3>
+<p align="center">
+  <a href="https://github.com/umpirsky/Symfony-Upgrade-Fixer">symfony upgrade fixer</a> &bull;
+  <b>twig gettext extractor</b> &bull;
+  <a href="https://github.com/umpirsky/wisdom">wisdom</a> &bull;
+  <a href="https://github.com/umpirsky/centipede">centipede</a> &bull;
+  <a href="https://github.com/umpirsky/PermissionsHandler">permissions handler</a> &bull;
+  <a href="https://github.com/umpirsky/Extraload">extraload</a> &bull;
+  <a href="https://github.com/umpirsky/Gravatar">gravatar</a> &bull;
+  <a href="https://github.com/umpirsky/locurro">locurro</a> &bull;
+  <a href="https://github.com/umpirsky/country-list">country list</a> &bull;
+  <a href="https://github.com/umpirsky/Transliterator">transliterator</a>
+</p>
+
+Twig Gettext Extractor [![Build Status](https://secure.travis-ci.org/umpirsky/Twig-Gettext-Extractor.svg?branch=master)](http://travis-ci.org/umpirsky/Twig-Gettext-Extractor)
 ======================
 
-This Twig Gettext Extractor is a fork with some love put in; things I needed to develop an alternative to Poedit that
-on OS X is a major pain with all of the temp folder issues.
-
-This tool, gives you what you need to extract *.po files from your Twig files, and additionally:
-
-* supports text domains
-* supports command-line stubs for functions
-* supports command-line stubs for filters
+The Twig Gettext Extractor is [Poedit](http://www.poedit.net/download.php)
+friendly tool which extracts translations from twig templates.
 
 ## Installation
 
-Install this through composer [composer](http://getcomposer.org).
+### Manual
 
-```json
-{
-    "require": {
-        "saeven/circlical-twig-extractor": "*"
-    }
-}
+#### Local
+
+Download the ``twig-gettext-extractor.phar`` file and store it somewhere on your computer.
+
+#### Global
+
+You can run these commands to easily access ``twig-gettext-extractor`` from anywhere on
+your system:
+
+```bash
+$ sudo wget https://github.com/umpirsky/Twig-Gettext-Extractor/releases/download/1.2.0/twig-gettext-extractor.phar -O /usr/local/bin/twig-gettext-extractor
+$ sudo chmod a+x /usr/local/bin/twig-gettext-extractor
 ```
-## Web-Based Editing for Zend Framework 2
+Then, just run ``twig-gettext-extractor``.
 
-You can skip this setup though, and use my web-based editor for ZF2.
-[Click here for more info](https://packagist.org/packages/saeven/zf2-poeditor)
+### Composer
 
-When the time comes, I'll PSR-7 it to make it framework-agnostic.
+#### Local
 
-## PoEdit Setup
+```bash
+$ composer require umpirsky/twig-gettext-extractor
+```
+
+#### Global
+
+```bash
+$ composer global require umpirsky/twig-gettext-extractor
+```
+
+Make sure you have ``~/.composer/vendor/bin`` in your ``PATH`` and
+you're good to go:
+
+```bash
+$ export PATH="$PATH:$HOME/.composer/vendor/bin"
+```
+Don't forget to add this line in your `.bashrc` file if you want to keep this change after reboot.
+
+## Setup
 
 By default, Poedit does not have the ability to parse Twig templates.
 This can be resolved by adding an additional parser (Edit > Preferences > Parsers)
@@ -37,14 +72,15 @@ with the following options:
 - Language: `Twig`
 - List of extensions: `*.twig`
 - Invocation:
-    - Parser command: `<project>/vendor/bin/twig-gettext-extractor --sort-output --force-po -o %o %C %K -L PHP --files %F`
+    - Parser command: `<project>/vendor/bin/twig-gettext-extractor --sort-output --force-po -o %o %C %K -L PHP --files %F` (replace `<project>` with absolute path to your project)
     - An item in keyword list: `-k%k`
     - An item in input file list: `%f`
     - Source code charset: `--from-code=%c`
 
 <img src="http://i.imgur.com/f9px2.png" />
 
-Now you can update your catalog and Poedit will synchronize it with your twig templates.
+Now you can update your catalog and Poedit will synchronize it with your twig
+templates.
 
 ## Custom extensions
 
@@ -56,15 +92,3 @@ Now you may add your custom extensions [here](https://github.com/umpirsky/Twig-G
 $twig->addFunction(new \Twig_SimpleFunction('myCustomExtension', true));
 $twig->addFunction(new \Twig_SimpleFunction('myCustomExtension2', true));
 ```
-
-## Tests
-
-To run the test suite, you need [composer](http://getcomposer.org) and
-[PHPUnit](https://github.com/sebastianbergmann/phpunit).
-
-    $ composer install --dev
-    $ phpunit
-
-## License
-
-Twig Gettext Extractor is licensed under the MIT license, like its parent fork.

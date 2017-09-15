@@ -2,13 +2,8 @@
 <?php
 
 /**
- * Fork from umpirsky's gettext extractor.  Modified to support
- * custom trans extension that supports domains.
- * 
- *  Modification:
- *  Alexandre Lemaire <alemaire@circlical.com>
- * 
- *  Original work:
+ * This file is part of the Twig Gettext utility.
+ *
  *  (c) Саша Стаменковић <umpirsky@gmail.com>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -27,27 +22,14 @@ if (file_exists($a = __DIR__.'/../../autoload.php')) {
     require_once __DIR__.'/vendor/autoload.php';
 }
 
-$twig = new Twig_Environment(new Twig\Gettext\Loader\Filesystem('/'), array(
-    'cache'       => '/tmp/cache/'.uniqid(),
+$twig = new Twig_Environment(new Twig\Gettext\Loader\Filesystem(DIRECTORY_SEPARATOR), array(
+    'cache'       => implode(DIRECTORY_SEPARATOR, array(sys_get_temp_dir(), 'cache', uniqid()) ),
     'auto_reload' => true
 ));
-
+$twig->addExtension(new Twig_Extensions_Extension_I18n());
 $twig->addExtension(new Symfony\Bridge\Twig\Extension\TranslationExtension(
     new Symfony\Component\Translation\Translator(null)
 ));
-
-$chain    = new Twig_Loader_Chain([]);
-$renderer = new ZfcTwig\View\TwigRenderer(
-    new Zend\View\View, 
-    $chain, 
-    $twig, 
-    new ZfcTwig\View\TwigResolver($twig)
-);
-
-$trans    = new CirclicalTwigTrans\Model\Twig\Trans( $renderer );
-
-$twig->addExtension( $trans );
-
 $twig->addExtension(new Symfony\Bridge\Twig\Extension\RoutingExtension(
     new Twig\Gettext\Routing\Generator\UrlGenerator()
 ));
@@ -56,85 +38,22 @@ $twig->addExtension(new Symfony\Bridge\Twig\Extension\FormExtension(
         new Symfony\Bridge\Twig\Form\TwigRendererEngine()
     )
 ));
-
+$twig->addExtension(new Symfony\Bridge\Twig\Extension\AssetExtension( 
+    new Symfony\Component\Asset\Packages()
+));
 // You can add more extensions here.
-$default_stub_functions = [
-    'formLabel', 'formInput', 'formElementErrors', 'formCaptcha', 'formHidden', 'formSelect', 'doctype',
-    'headTitle', 'headMeta', 'headStyle', 'headScript', 'headLink', 'inlineScript', 'layout',  'recaptcha',
-];
 
-foreach( $default_stub_functions as $f )
-    $twig->addFunction(new \Twig_SimpleFunction($f, true));
-
-$setFunctions = false;
-$setFilters   = false;
 array_shift($_SERVER['argv']);
-foreach ($_SERVER['argv'] as $arg)
-{
-    if( "--functions" == $arg )
-    {
-        $setFunctions = true;
-    }
-    else if( $setFunctions )
-    {
-        foreach( explode(",", $arg ) as $fn )
-            $twig->addFunction(new \Twig_SimpleFunction($fn,true));
-	    $setFunctions = false;
-    }
-    else if( "--filters" == $arg )
-    {
-        $setFilters = true;
-    }
-    else if( $setFilters )
-    {
-        foreach( explode(",", $arg ) as $fn )
-            $twig->addFilter(new \Twig_SimpleFilter($fn,true));
-	    $setFilters = false;
-    }
-}
-
-
 $addTemplate = false;
-$setExecutable = false;
+
 $extractor = new Twig\Gettext\Extractor($twig);
 
-foreach ($_SERVER['argv'] as $arg)
-{
-    if ('--files' == $arg)
-    {
+foreach ($_SERVER['argv'] as $arg) {
+    if ('--files' == $arg) {
         $addTemplate = true;
-    }
-    else if ($addTemplate)
-    {
+    } else if ($addTemplate) {
         $extractor->addTemplate(getcwd().DIRECTORY_SEPARATOR.$arg);
-    }
-    else if( "--exec" == $arg )
-    {
-        $setExecutable = true;
-    }
-    else if( $setExecutable )
-    {
-        $extractor->setExecutable( $arg );
-        $setExecutable = false;
-    }
-    else if( "--functions" == $arg )
-    {
-        $setFunctions = true;
-    }
-    else if( $setFunctions )
-    {
-	    $setFunctions = false;
-    }
-    else if( "--filters" == $arg )
-    {
-        $setFilters = true;
-    }
-    else if( $setFilters )
-    {
-	    $setFilters = false;
-    }
-    else
-    {
+    } else {
         $extractor->addGettextParameter($arg);
     }
 }
